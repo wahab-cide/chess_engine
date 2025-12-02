@@ -2,6 +2,7 @@
 #include "search.h"
 #include "movegen.h"
 #include "board.h"
+#include "book.h"
 #include "constants.h"
 #include <iostream>
 #include <vector>
@@ -40,7 +41,13 @@ std::string checkGameEndStatus() {
 }
 
 // UCI handlers
-void handleUci() { std::cout << "id name Gotham\nid author Outhills\nuciok" << std::endl; }
+void handleUci() {
+    // Load opening book if not already loaded
+    if (globalBook.size() == 0) {
+        globalBook.loadFromFile("opening_book.txt");
+    }
+    std::cout << "id name Gotham\nid author Outhills\nuciok" << std::endl;
+}
 void handleIsReady() { std::cout << "readyok" << std::endl; }
 void handleUciNewGame() {
     currentBoard.reset();
@@ -128,6 +135,14 @@ void handleGo(std::istringstream& iss) {
     std::vector<Move> legalEngineMoves;
     generateLegalMoves(currentBoard, legalEngineMoves, false);
     if (legalEngineMoves.empty()) { std::cout << "bestmove 0000" << std::endl; return; }
+
+    // Check opening book first
+    Move bookMove;
+    if (globalBook.probeBook(currentBoard, bookMove)) {
+        std::cout << "info string Book move" << std::endl;
+        std::cout << "bestmove " << bookMove.toUci() << std::endl;
+        return;
+    }
 
     orderMoves(currentBoard, legalEngineMoves);
 

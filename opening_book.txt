@@ -1,0 +1,141 @@
+# Gotham Chess Engine Opening Book
+# Format: FEN,move1,move2,move3,...
+# Multiple moves per position for variety
+
+# Starting position - main opening moves
+rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1,e2e4,d2d4,c2c4,g1f3
+
+# After 1.e4 - Black's main responses
+rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1,e7e5,c7c5,e7e6,c7c6,d7d5,g8f6
+
+# After 1.e4 e5 - White's second move
+rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2,g1f3,f2f4,b1c3,f1c4
+
+# After 1.e4 e5 2.Nf3 - Black's responses
+rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2,b8c6,g8f6,d7d6
+
+# After 1.e4 e5 2.Nf3 Nc6 - Spanish/Italian
+r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3,f1b5,f1c4,d2d4,b1c3
+
+# Ruy Lopez: 1.e4 e5 2.Nf3 Nc6 3.Bb5
+r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3,a7a6,g8f6,f7f5
+
+# Ruy Lopez: After 3...a6
+r1bqkbnr/1ppp1ppp/p1n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 0 4,f1a4,b5c6
+
+# Italian Game: 1.e4 e5 2.Nf3 Nc6 3.Bc4
+r1bqkbnr/pppp1ppp/2n5/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3,f1c5,g8f6
+
+# Sicilian Defense: 1.e4 c5
+rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR w KQkq c6 0 2,g1f3,b1c3,c2c3,d2d4
+
+# Sicilian: 1.e4 c5 2.Nf3
+rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2,d7d6,b8c6,e7e6,g7g6
+
+# Sicilian: Open - 1.e4 c5 2.Nf3 d6 3.d4
+rnbqkbnr/pp2pppp/3p4/2p5/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3,c5d4
+
+# Sicilian: Open - 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4
+rnbqkbnr/pp2pppp/3p4/8/3NP3/8/PPP2PPP/RNBQKB1R b KQkq - 0 4,g8f6,b8c6
+
+# French Defense: 1.e4 e6
+rnbqkbnr/pppp1ppp/4p3/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2,d2d4,d2d3,b1c3
+
+# French: 1.e4 e6 2.d4
+rnbqkbnr/pppp1ppp/4p3/8/3PP3/8/PPP2PPP/RNBQKBNR b KQkq d3 0 2,d7d5
+
+# French: 1.e4 e6 2.d4 d5
+rnbqkbnr/ppp2ppp/4p3/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq d6 0 3,b1c3,e4d5,e4e5
+
+# Caro-Kann: 1.e4 c6
+rnbqkbnr/pp1ppppp/2p5/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2,d2d4,b1c3,g1f3
+
+# Caro-Kann: 1.e4 c6 2.d4 d5
+rnbqkbnr/pp2pppp/2p5/3p4/3PP3/8/PPP2PPP/RNBQKBNR w KQkq d6 0 3,b1c3,e4d5
+
+# After 1.d4 - Black's responses
+rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1,d7d5,g8f6,e7e6,f7f5
+
+# Queen's Gambit: 1.d4 d5 2.c4
+rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq c3 0 2,e7e6,c7c6,d5c4
+
+# Queen's Gambit Declined: 1.d4 d5 2.c4 e6
+rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3,b1c3,g1f3
+
+# Queen's Gambit Accepted: 1.d4 d5 2.c4 dxc4
+rnbqkbnr/ppp1pppp/8/8/2pP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3,g1f3,e2e3
+
+# Indian Defenses: 1.d4 Nf6
+rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2,c2c4,g1f3,b1c3
+
+# King's Indian: 1.d4 Nf6 2.c4 g6
+rnbqkb1r/pppppp1p/5np1/8/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3,b1c3,g1f3
+
+# Nimzo-Indian: 1.d4 Nf6 2.c4 e6 3.Nc3 Bb4
+rnbqk2r/pppp1ppp/4pn2/8/1bPP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4,e2e3,d1c2,g1f3
+
+# English Opening: 1.c4
+rnbqkbnr/pppppppp/8/8/2P5/8/PP1PPPPP/RNBQKBNR b KQkq c3 0 1,e7e5,g8f6,c7c5
+
+# English: 1.c4 e5
+rnbqkbnr/pppp1ppp/8/4p3/2P5/8/PP1PPPPP/RNBQKBNR w KQkq e6 0 2,b1c3,g1f3
+
+# English: 1.c4 c5 (Symmetrical)
+rnbqkbnr/pp1ppppp/8/2p5/2P5/8/PP1PPPPP/RNBQKBNR w KQkq c6 0 2,b1c3,g1f3
+
+# Reti Opening: 1.Nf3
+rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1,d7d5,g8f6,c7c5
+
+# Reti: 1.Nf3 d5 2.c4
+rnbqkbnr/ppp1pppp/8/3p4/2P5/5N2/PP1PPPPP/RNBQKB1R b KQkq c3 0 2,e7e6,c7c6,d5c4
+
+# King's Gambit: 1.e4 e5 2.f4
+rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR b KQkq f3 0 2,e5f4,d7d5
+
+# Petrov Defense: 1.e4 e5 2.Nf3 Nf6
+rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3,b1c3,f3e5,d2d4
+
+# Scotch Game: 1.e4 e5 2.Nf3 Nc6 3.d4
+r1bqkbnr/pppp1ppp/2n5/4p3/3PP3/5N2/PPP2PPP/RNBQKB1R b KQkq d3 0 3,e5d4
+
+# Four Knights: 1.e4 e5 2.Nf3 Nc6 3.Nc3 Nf6
+r1bqkb1r/pppp1ppp/2n2n2/4p3/4P3/2N2N2/PPPP1PPP/R1BQKB1R w KQkq - 4 4,f1b5,d2d4
+
+# Pirc Defense: 1.e4 d6
+rnbqkbnr/ppp1pppp/3p4/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2,d2d4,b1c3
+
+# Pirc: 1.e4 d6 2.d4 Nf6 3.Nc3 g6
+rnbqkb1r/ppp1pp1p/3p1np1/8/3PP3/2N5/PPP2PPP/R1BQKBNR w KQkq - 0 4,f2f4,g1f3,f1e2
+
+# Alekhine Defense: 1.e4 Nf6
+rnbqkb1r/pppppppp/5n2/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 1 2,e4e5,b1c3
+
+# Scandinavian: 1.e4 d5 2.exd5
+rnbqkbnr/ppp1pppp/8/3P4/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2,d8d5,g8f6
+
+# Dutch Defense: 1.d4 f5
+rnbqkbnr/ppppp1pp/8/5p2/3P4/8/PPP1PPPP/RNBQKBNR w KQkq f6 0 2,g1f3,c2c4,g2g3
+
+# Benoni Defense: 1.d4 Nf6 2.c4 c5
+rnbqkb1r/pp1ppppp/5n2/2p5/2PP4/8/PP2PPPP/RNBQKBNR w KQkq c6 0 3,d4d5
+
+# Grunfeld Defense: 1.d4 Nf6 2.c4 g6 3.Nc3 d5
+rnbqkb1r/ppp1pp1p/5np1/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq d6 0 4,c4d5,g1f3
+
+# Queen's Indian: 1.d4 Nf6 2.c4 e6 3.Nf3 b6
+rnbqkb1r/p1pp1ppp/1p2pn2/8/2PP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 0 4,g2g3,a2a3
+
+# Bogo-Indian: 1.d4 Nf6 2.c4 e6 3.Nf3 Bb4+
+rn1qkb1r/pppp1ppp/4pn2/8/1bPP4/5N2/PP2PPPP/RNBQKB1R w KQkq - 2 4,b1d2,c1d2
+
+# London System: 1.d4 d5 2.Bf4
+rnbqkbnr/ppp1pppp/8/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR b KQkq - 1 2,g8f6,c7c5,e7e6
+
+# Colle System: 1.d4 d5 2.Nf3 Nf6 3.e3
+rnbqkb1r/ppp1pppp/5n2/3p4/3P4/4PN2/PPP2PPP/RNBQKB1R b KQkq - 0 3,e7e6,c7c5
+
+# Torre Attack: 1.d4 Nf6 2.Nf3 e6 3.Bg5
+rnbqkb1r/pppp1ppp/4pn2/6B1/3P4/5N2/PPP1PPPP/RN1QKB1R b KQkq - 3 3,h7h6,c7c5,f8e7
+
+# Trompowsky: 1.d4 Nf6 2.Bg5
+rnbqkb1r/pppppppp/5n2/6B1/3P4/8/PPP1PPPP/RN1QKBNR b KQkq - 2 2,e7e6,d7d5,c7c5
