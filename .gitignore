@@ -1,0 +1,43 @@
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+chess_engine
+*.exe
+*.out
+*.app
+
+# Build directories
+build/
+bin/
+obj/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.pdf
+
+# Test results
+*.pgn
+results*.pgn
+
+# Backup files
+*.bak
+*~
+
+# OS generated files
+Thumbs.db
