@@ -41,3 +41,8 @@ results*.pgn
 
 # OS generated files
 Thumbs.db
+
+# Development notes and roadmap (private)
+ROADMAP.md
+notes.md
+TODO.md

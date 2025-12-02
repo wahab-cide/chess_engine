@@ -1,6 +1,7 @@
 #include "evaluation.h"
 #include "board.h"
 #include "constants.h"
+#include "pawn_structure.h"
 #include <cctype>
 
 // Evaluate the board position from white's perspective
@@ -53,5 +54,9 @@ int evaluateBoard(const BoardState& state) {
             }
         }
     }
+
+    // Add pawn structure evaluation
+    score += evaluatePawnStructure(state);
+
     return score;
 }

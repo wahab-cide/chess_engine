@@ -2,9 +2,9 @@ CXX = g++
 CXXFLAGS = -std=c++11 -O3 -Wall -Wextra
 TARGET = chess_engine
 
-SRCS = main.cpp board.cpp movegen.cpp evaluation.cpp search.cpp uci.cpp
+SRCS = main.cpp board.cpp movegen.cpp evaluation.cpp search.cpp uci.cpp pawn_structure.cpp
 OBJS = $(SRCS:.cpp=.o)
-HEADERS = constants.h types.h board.h movegen.h evaluation.h search.h uci.h
+HEADERS = constants.h types.h board.h movegen.h evaluation.h search.h uci.h pawn_structure.h
 
 all: $(TARGET)
 
