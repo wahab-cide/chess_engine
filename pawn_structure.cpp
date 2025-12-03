@@ -43,7 +43,7 @@ int evaluateDoubledPawns(const BoardState& state) {
 }
 
 // Check if a pawn is isolated (no friendly pawns on adjacent files)
-bool isIsolatedPawn(const BoardState& state, int row, int col, bool isWhite) {
+bool isIsolatedPawn(const BoardState& state, int col, bool isWhite) {
     char pawn = isWhite ? W_PAWN : B_PAWN;
 
     // Check left and right adjacent files for friendly pawns
@@ -68,10 +68,10 @@ int evaluateIsolatedPawns(const BoardState& state) {
         for (int col = 0; col < 8; col++) {
             char piece = state.board[row][col];
 
-            if (piece == W_PAWN && isIsolatedPawn(state, row, col, true)) {
+            if (piece == W_PAWN && isIsolatedPawn(state, col, true)) {
                 score += ISOLATED_PAWN_PENALTY;
             }
-            if (piece == B_PAWN && isIsolatedPawn(state, row, col, false)) {
+            if (piece == B_PAWN && isIsolatedPawn(state, col, false)) {
                 score -= ISOLATED_PAWN_PENALTY;
             }
         }

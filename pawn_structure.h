@@ -25,7 +25,7 @@ int evaluatePawnChains(const BoardState& state);
 
 // Helper functions
 bool isPassedPawn(const BoardState& state, int row, int col, bool isWhite);
-bool isIsolatedPawn(const BoardState& state, int row, int col, bool isWhite);
+bool isIsolatedPawn(const BoardState& state, int col, bool isWhite);
 bool isBackwardPawn(const BoardState& state, int row, int col, bool isWhite);
 bool hasConnectedPawn(const BoardState& state, int row, int col, bool isWhite);
 

@@ -5,7 +5,10 @@
 #include <chrono>
 
 int main() {
-    std::ios_base::sync_with_stdio(false);
+    // Enable unbuffered output for UCI protocol compatibility
+    std::cout.setf(std::ios::unitbuf);
+    std::cerr.setf(std::ios::unitbuf);
+
     global_rng.seed(std::chrono::steady_clock::now().time_since_epoch().count());
 
     std::string line;
