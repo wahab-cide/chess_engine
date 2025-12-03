@@ -13,11 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
+
+    - name: Build chess engine
       run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+
+    - name: Test UCI protocol
+      run: |
+        echo "uci" | ./chess_engine | grep -q "uciok"
+        echo "isready" | ./chess_engine | grep -q "readyok"
