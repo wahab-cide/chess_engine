@@ -3,6 +3,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include <vector>
 
 // BoardState constructor
 BoardState::BoardState() { reset(); }
