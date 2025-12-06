@@ -16,7 +16,6 @@ The score is in **centipawns** (1/100th of a pawn):
 ## The Three Pillars of Evaluation
 
 ### 1. Material (40-50% of evaluation)
-**Current Implementation:** ✅ Done
 
 Basic piece values:
 - Pawn: 100 cp (baseline)
@@ -27,7 +26,6 @@ Basic piece values:
 - King: 20000 cp (infinite value)
 
 ### 2. Positional Factors (30-40% of evaluation)
-**Current Implementation:** Partial (PST only)
 
 This is what we're adding now:
 - Pawn structure
