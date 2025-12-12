@@ -1,6 +1,6 @@
 # Chess Engine - Gotham
 
-A UCI-compatible chess engine (~2000 ELO) with alpha-beta pruning, quiescence search, transposition tables, and pawn structure evaluation.
+A UCI-compatible chess engine (~2100 ELO) with alpha-beta pruning, quiescence search, transposition tables, and pawn structure evaluation.
 
 ## Build
 
