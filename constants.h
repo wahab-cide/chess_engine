@@ -120,6 +120,22 @@ const int CHECK_EXTENSION_PLY = 1;
 // Transposition Table
 const size_t MAX_TT_SIZE = 1000000;
 
+// Null Move Pruning
+const int NULL_MOVE_REDUCTION = 2;
+const int NULL_MOVE_MIN_DEPTH = 3;
+
+// Killer Moves (2 killer moves per ply)
+const int NUM_KILLER_MOVES = 2;
+
+// Move Ordering Scores
+const int KILLER_MOVE_1_SCORE = 900;
+const int KILLER_MOVE_2_SCORE = 800;
+const int HISTORY_SCORE_DIVISOR = 100;
+
+// Aspiration Windows
+const int ASPIRATION_WINDOW = 50;
+const int ASPIRATION_MIN_DEPTH = 3;
+
 // Transposition Table Entry Flags
 enum TTEntryFlag { TT_EXACT, TT_LOWERBOUND, TT_UPPERBOUND, TT_INVALID };
 

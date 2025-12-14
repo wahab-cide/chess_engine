@@ -5,13 +5,35 @@
 #include "constants.h"
 #include <limits>
 #include <algorithm>
+#include <cstring>
+#include <vector>
 
 // Global search state
 std::atomic<bool> time_is_up{false};
 std::atomic<uint64_t> nodes_searched{0};
 std::map<std::string, TTEntry> transpositionTable;
 
-// Quiescence search
+// Killer moves: [ply][killer_index]
+Move killerMoves[64][2];
+
+// History heuristic: [from_square][to_square]
+int historyTable[64][64];
+
+// Clear killer moves
+void clearKillerMoves() {
+    for (int ply = 0; ply < 64; ++ply) {
+        for (int i = 0; i < 2; ++i) {
+            killerMoves[ply][i] = Move();
+        }
+    }
+}
+
+// Clear history table
+void clearHistoryTable() {
+    std::memset(historyTable, 0, sizeof(historyTable));
+}
+
+// Quiescence search (unchanged - doesn't need ply tracking)
 int quiescenceSearch(BoardState state, int alpha, int beta, bool maximizingPlayer,
                      const std::chrono::steady_clock::time_point& startTime,
                      const std::chrono::milliseconds& timeLimit, int quiescenceDepth) {
@@ -45,7 +67,7 @@ int quiescenceSearch(BoardState state, int alpha, int beta, bool maximizingPlaye
 
     std::vector<Move> q_moves;
     generateLegalMoves(state, q_moves, !in_check);
-    orderMoves(state, q_moves);
+    orderMoves(state, q_moves, 0);
 
     if (in_check && q_moves.empty()) {
         return maximizingPlayer ? (-MATE_SCORE - MAX_SEARCH_PLY - quiescenceDepth) : (MATE_SCORE + MAX_SEARCH_PLY + quiescenceDepth);
@@ -77,10 +99,10 @@ int quiescenceSearch(BoardState state, int alpha, int beta, bool maximizingPlaye
     }
 }
 
-// Alpha-beta search
+// Alpha-beta search with null move pruning, killer moves, and history heuristic
 int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maximizingPlayer,
                     const std::chrono::steady_clock::time_point& startTime,
-                    const std::chrono::milliseconds& timeLimit)
+                    const std::chrono::milliseconds& timeLimit, int ply, bool allowNullMove)
 {
     if (time_is_up.load(std::memory_order_relaxed)) return 0;
     nodes_searched++;
@@ -117,10 +139,30 @@ int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maxim
         }
     }
 
-    orderMoves(state, legalMoves);
+    bool inCheck = isKingInCheck(state, state.whiteToMove);
+
+    // Null Move Pruning
+    if (allowNullMove && !inCheck && depth >= NULL_MOVE_MIN_DEPTH) {
+        // Make null move (pass turn to opponent)
+        BoardState nullState = state;
+        nullState.whiteToMove = !nullState.whiteToMove;
+        nullState.updateFenKey();
+
+        int nullScore = -alphaBetaSearch(nullState, depth - 1 - NULL_MOVE_REDUCTION,
+                                         -beta, -beta + 1,
+                                         !maximizingPlayer,
+                                         startTime, timeLimit, ply + 1, false);
+
+        if (time_is_up.load(std::memory_order_relaxed)) return 0;
+
+        if (nullScore >= beta) {
+            return beta; // Beta cutoff from null move
+        }
+    }
+
+    orderMoves(state, legalMoves, ply);
     TTEntryFlag bestFlag = TT_UPPERBOUND;
     int movesSearchedCount = 0;
-    bool inCheck = isKingInCheck(state, state.whiteToMove);
 
     if (maximizingPlayer) {
         int maxEval = std::numeric_limits<int>::min();
@@ -149,16 +191,16 @@ int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maxim
             }
 
             if (applyLmr) {
-                currentEval = alphaBetaSearch(nextState, newDepth - LMR_REDUCTION, alpha, beta, false, startTime, timeLimit);
+                currentEval = alphaBetaSearch(nextState, newDepth - LMR_REDUCTION, alpha, beta, false, startTime, timeLimit, ply + 1, true);
             } else {
-                currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, false, startTime, timeLimit);
+                currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, false, startTime, timeLimit, ply + 1, true);
             }
 
             if (time_is_up.load(std::memory_order_relaxed)) return 0;
 
             // Re-search if LMR was applied and the score is promising
             if (applyLmr && currentEval > alpha) {
-                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, false, startTime, timeLimit);
+                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, false, startTime, timeLimit, ply + 1, true);
                  if (time_is_up.load(std::memory_order_relaxed)) return 0;
             }
 
@@ -169,8 +211,22 @@ int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maxim
                 bestFlag = TT_EXACT;
             }
             if (beta <= alpha) {
-                 bestFlag = TT_LOWERBOUND;
-                 break;
+                bestFlag = TT_LOWERBOUND;
+
+                // Update killer moves for quiet moves
+                if (!move.isCapture(state) && move.promotionPiece == EMPTY && ply >= 0 && ply < MAX_SEARCH_PLY) {
+                    if (!(move == killerMoves[ply][0])) {
+                        killerMoves[ply][1] = killerMoves[ply][0];
+                        killerMoves[ply][0] = move;
+                    }
+
+                    // Update history table
+                    int fromSquare = move.fromRow * 8 + move.fromCol;
+                    int toSquare = move.toRow * 8 + move.toCol;
+                    historyTable[fromSquare][toSquare] += depth * depth;
+                }
+
+                break;
             }
             movesSearchedCount++;
         }
@@ -204,16 +260,16 @@ int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maxim
             }
 
             if (applyLmr) {
-                 currentEval = alphaBetaSearch(nextState, newDepth - LMR_REDUCTION, alpha, beta, true, startTime, timeLimit);
+                 currentEval = alphaBetaSearch(nextState, newDepth - LMR_REDUCTION, alpha, beta, true, startTime, timeLimit, ply + 1, true);
             } else {
-                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, true, startTime, timeLimit);
+                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, true, startTime, timeLimit, ply + 1, true);
             }
 
             if (time_is_up.load(std::memory_order_relaxed)) return 0;
 
             // Re-search for LMR
             if (applyLmr && currentEval < beta) {
-                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, true, startTime, timeLimit);
+                 currentEval = alphaBetaSearch(nextState, newDepth, alpha, beta, true, startTime, timeLimit, ply + 1, true);
                  if (time_is_up.load(std::memory_order_relaxed)) return 0;
             }
 
@@ -225,6 +281,20 @@ int alphaBetaSearch(BoardState state, int depth, int alpha, int beta, bool maxim
             }
             if (beta <= alpha) {
                 bestFlag = TT_UPPERBOUND;
+
+                // Update killer moves for quiet moves
+                if (!move.isCapture(state) && move.promotionPiece == EMPTY && ply >= 0 && ply < MAX_SEARCH_PLY) {
+                    if (!(move == killerMoves[ply][0])) {
+                        killerMoves[ply][1] = killerMoves[ply][0];
+                        killerMoves[ply][0] = move;
+                    }
+
+                    // Update history table
+                    int fromSquare = move.fromRow * 8 + move.fromCol;
+                    int toSquare = move.toRow * 8 + move.toCol;
+                    historyTable[fromSquare][toSquare] += depth * depth;
+                }
+
                 break;
             }
             movesSearchedCount++;

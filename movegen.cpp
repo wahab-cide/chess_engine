@@ -1,6 +1,7 @@
 #include "movegen.h"
 #include "board.h"
 #include "constants.h"
+#include "search.h"
 #include <algorithm>
 #include <cctype>
 
@@ -136,10 +137,12 @@ void generateLegalMoves(const BoardState& S, std::vector<Move>& legal_moves, boo
     }
 }
 
-// MVV-LVA move ordering
-void orderMoves(const BoardState& state, std::vector<Move>& moves) {
+// MVV-LVA move ordering with killer moves and history heuristic
+void orderMoves(const BoardState& state, std::vector<Move>& moves, int ply) {
     for (auto& move : moves) {
         move.score = 0;
+
+        // 1. Captures (MVV-LVA) - highest priority
         if (move.isCapture(state)) {
             char movingPieceType = toupper(state.board[move.fromRow][move.fromCol]);
             char capturedPieceType;
@@ -159,6 +162,8 @@ void orderMoves(const BoardState& state, std::vector<Move>& moves) {
 
             move.score = (victimValue * 100) - attackerValue;
         }
+
+        // 2. Promotions - very high priority
         if (move.promotionPiece != EMPTY) {
             auto promo_it = mvv_lva_piece_values.find(toupper(move.promotionPiece));
             if (promo_it != mvv_lva_piece_values.end()){
@@ -167,7 +172,22 @@ void orderMoves(const BoardState& state, std::vector<Move>& moves) {
                  move.score += mvv_lva_piece_values.at(W_QUEEN) * 100;
             }
         }
+
+        // 3. Killer moves (for quiet moves) - medium priority
+        if (!move.isCapture(state) && move.promotionPiece == EMPTY && ply >= 0 && ply < MAX_SEARCH_PLY) {
+            if (move == killerMoves[ply][0]) {
+                move.score += KILLER_MOVE_1_SCORE;
+            } else if (move == killerMoves[ply][1]) {
+                move.score += KILLER_MOVE_2_SCORE;
+            }
+
+            // 4. History heuristic (for quiet moves) - lower priority
+            int fromSquare = move.fromRow * 8 + move.fromCol;
+            int toSquare = move.toRow * 8 + move.toCol;
+            move.score += historyTable[fromSquare][toSquare] / HISTORY_SCORE_DIVISOR;
+        }
     }
+
     std::sort(moves.begin(), moves.end(), [](const Move& a, const Move& b) {
         return a.score > b.score;
     });

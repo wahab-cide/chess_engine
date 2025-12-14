@@ -132,6 +132,10 @@ void handleGo(std::istringstream& iss) {
     time_is_up.store(false, std::memory_order_relaxed);
     nodes_searched.store(0, std::memory_order_relaxed);
 
+    // Clear killer moves and history table for new search
+    clearKillerMoves();
+    clearHistoryTable();
+
     std::vector<Move> legalEngineMoves;
     generateLegalMoves(currentBoard, legalEngineMoves, false);
     if (legalEngineMoves.empty()) { std::cout << "bestmove 0000" << std::endl; return; }
@@ -144,7 +148,7 @@ void handleGo(std::istringstream& iss) {
         return;
     }
 
-    orderMoves(currentBoard, legalEngineMoves);
+    orderMoves(currentBoard, legalEngineMoves, 0);
 
     Move bestMoveOverall = legalEngineMoves[0];
     Move bestMoveThisIteration = legalEngineMoves[0];
@@ -152,7 +156,7 @@ void handleGo(std::istringstream& iss) {
 
     bool isEngineWhite = currentBoard.whiteToMove;
 
-    // Iterative Deepening Loop
+    // Iterative Deepening Loop with Aspiration Windows
     for (int currentDepth = 1; currentDepth <= MAX_SEARCH_PLY; ++currentDepth) {
         auto iterationStartTime = std::chrono::steady_clock::now();
         int currentIterBestEval = std::numeric_limits<int>::min();
@@ -160,14 +164,32 @@ void handleGo(std::istringstream& iss) {
 
         uint64_t nodes_at_start_of_iter = nodes_searched.load(std::memory_order_relaxed);
 
+        // Aspiration windows for depths >= 3
+        int alpha = std::numeric_limits<int>::min();
+        int beta = std::numeric_limits<int>::max();
+        if (currentDepth >= ASPIRATION_MIN_DEPTH && bestEvalOverall != std::numeric_limits<int>::min()) {
+            alpha = bestEvalOverall - ASPIRATION_WINDOW;
+            beta = bestEvalOverall + ASPIRATION_WINDOW;
+        }
+
         for (const auto& engineMove : legalEngineMoves) {
             BoardState boardAfterEngineMove = currentBoard;
             apply_raw_move_to_board(boardAfterEngineMove, engineMove);
             int evalFromWhitePerspective = alphaBetaSearch(boardAfterEngineMove, currentDepth - 1,
+                                                           alpha, beta,
+                                                           !isEngineWhite,
+                                                           startTime, timeLimit, 1, true);
+
+            if (time_is_up.load(std::memory_order_relaxed)) break;
+
+            // Re-search with full window if we fall outside aspiration window
+            if ((evalFromWhitePerspective <= alpha || evalFromWhitePerspective >= beta) && currentDepth >= ASPIRATION_MIN_DEPTH) {
+                evalFromWhitePerspective = alphaBetaSearch(boardAfterEngineMove, currentDepth - 1,
                                                            std::numeric_limits<int>::min(),
                                                            std::numeric_limits<int>::max(),
                                                            !isEngineWhite,
-                                                           startTime, timeLimit);
+                                                           startTime, timeLimit, 1, true);
+            }
 
             if (time_is_up.load(std::memory_order_relaxed)) break;
 

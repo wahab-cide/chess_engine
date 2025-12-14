@@ -7,7 +7,7 @@
 // Move generation
 void generateLegalMoves(const BoardState& state, std::vector<Move>& legal_moves, bool capturesOnly = false);
 void generateAllPseudoLegalMoves(const BoardState& state, std::vector<Move>& moves, bool capturesOnly);
-void orderMoves(const BoardState& state, std::vector<Move>& moves);
+void orderMoves(const BoardState& state, std::vector<Move>& moves, int ply = 0);
 
 // Helper for adding moves
 void addMove(const BoardState& s, int r1, int c1, int r2, int c2, std::vector<Move>& m,
