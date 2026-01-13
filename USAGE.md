@@ -1,5 +1,3 @@
-# Gotham Chess Engine - Usage Guide
-
 A UCI-compatible chess engine with alpha-beta search, quiescence search, transposition tables, and advanced move ordering.
 
 ## Building the Engine
@@ -81,12 +79,10 @@ EOF
 6. Protocol: `UCI` (auto-detected)
 7. Save
 
-**Features:**
+
 
 
 ### Alternative GUIs
-
-
 
 
 #### Tarrasch Chess GUI (Simple, macOS)
