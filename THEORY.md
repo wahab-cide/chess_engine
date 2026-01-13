@@ -1,65 +1,3 @@
-# Chess Engine Evaluation Theory
-
-## Understanding Chess Evaluation
-
-A chess engine's evaluation function tries to answer: **"Who is better and by how much?"**
-
-The score is in **centipawns** (1/100th of a pawn):
-- +100 = White is ahead by one pawn
-- -50 = Black is ahead by half a pawn
-- +300 = White is ahead by about 3 pawns (usually winning)
-- ±1000 = Overwhelming advantage
-- ±100000 = Checkmate
-
----
-
-## The Three Pillars of Evaluation
-
-### 1. Material (40-50% of evaluation)
-
-Basic piece values:
-- Pawn: 100 cp (baseline)
-- Knight: 320 cp (~3 pawns)
-- Bishop: 330 cp (~3.3 pawns)
-- Rook: 500 cp (~5 pawns)
-- Queen: 900 cp (~9 pawns)
-- King: 20000 cp (infinite value)
-
-### 2. Positional Factors (30-40% of evaluation)
-
-This is what we're adding now:
-- Pawn structure
-- Piece placement (PST)
-- King safety
-- Piece mobility
-- Control of center
-- Piece coordination
-
-### 3. Tactical Factors (10-20% of evaluation)
-**Future Implementation:**
-
-- Threats
-- Pins and forks
-- Discovered attacks
-- X-ray attacks
-- Static Exchange Evaluation (SEE)
-
----
-
-
-### Why Pawns Are Special
-
-Pawns are the "soul of chess" (Philidor). They:
-1. **Cannot move backward** - Weaknesses are permanent
-2. **Define the position** - Determine piece placement
-3. **Create targets** - Weak pawns become attack points
-4. **Control space** - Restrict opponent pieces
-5. **Transform** - Promote to pieces
-
-**Key principle:** Pawn moves are commitments. You can't undo them.
-
----
-
 ## Pawn Structure Concepts
 
 ### 1. Doubled Pawns
@@ -88,7 +26,7 @@ Bad:                    Good:
 **Examples from master games:**
 - Doubled c-pawns in certain Nimzo-Indian structures
 - Doubled f-pawns after Bxf6 (common tradeoff)
-- Doubled d-pawns after cxd3 in Jobava London
+- Doubled d-pawns after cxd3 in Jobava London(my favorite opening)
 
 ---
 
@@ -106,7 +44,7 @@ Isolated d-pawn (IQP):
 
 **Why isolated pawns are weak:**
 - Cannot be defended by other pawns
-- Square in front (d5) becomes outpost
+- Square in front (d5) becomes outpost(for a knight)
 - Becomes target in endgame
 - Restricts piece mobility
 
@@ -375,11 +313,11 @@ Should: Penalize doubled pawns
 
 ## References
 
-### Essential Resources
 
 **Websites:**
 - Chess Programming Wiki: https://www.chessprogramming.org/
 - Computer Chess Club: http://talkchess.com/
+- Blog Post: https://wahabcide.xyz
 
 **Books:**
 - "Pawn Structure Chess" by Andrew Soltis
@@ -388,4 +326,4 @@ Should: Penalize doubled pawns
 
 ---
 
-Last Updated: December 2, 2025
+Last Updated: January 13, 2025
